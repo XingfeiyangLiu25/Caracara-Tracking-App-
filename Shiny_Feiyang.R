@@ -1,3 +1,0 @@
-install.packages("shiny")
-install.packages("bslib")
-install.packages("rsconnect")

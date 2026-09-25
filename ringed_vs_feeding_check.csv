@@ -1,0 +1,79 @@
+"individual_id","ringed_date","ringed_colony","Species","seen_at_feeding_station","days_of_opportunity"
+"345 - Green N17",2026-05-30,"North Hut","Striated caracara",FALSE,6
+"351 - Green P19",2026-05-31,"North Hut","Striated caracara",FALSE,5
+"357 - Green S15",2026-06-01,"North End","Striated caracara",FALSE,4
+"358 - Green S16",2026-06-01,"North End","Striated caracara",FALSE,4
+"364 - Green T18",2026-06-02,"North End","Striated caracara",FALSE,3
+"365 - Green T19",2026-06-02,"North End","Striated caracara",FALSE,3
+"366 - Green U15",2026-06-02,"North End","Striated caracara",FALSE,3
+"373 - Green V17",2026-06-04,"Settlement","Striated caracara",FALSE,1
+"374 - Green V18",2026-06-04,"Settlement","Striated caracara",FALSE,1
+"382 - NA",2026-06-05,"Settlement","Striated caracara",FALSE,0
+"386 - Green Y16",2026-06-05,"Settlement","Striated caracara",FALSE,0
+"387 - Green Y17",2026-06-05,"Settlement","Striated caracara",FALSE,0
+"388 - NA",2026-06-05,"Settlement","Striated caracara",FALSE,0
+"389 - Green Z18",2026-06-05,"Settlement","Striated caracara",FALSE,0
+"390 - Green Z19",2026-06-05,"Burnt Island","Striated caracara",FALSE,0
+"313 - Green D19",2026-05-23,"South","Striated caracara",TRUE,13
+"314 - Green E15",2026-05-25,"","Striated caracara",TRUE,11
+"315 - Green E16",2026-05-25,"","Striated caracara",TRUE,11
+"316 - Green E18",2026-05-25,"","Striated caracara",TRUE,11
+"317 - Green E19",2026-05-25,"","Striated caracara",TRUE,11
+"318 - Green F15",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"319 - Green F16",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"320 - Green F17",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"321 - Green F18",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"322 - Green F19",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"323 - Green G15",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"324 - Green G16",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"325 - Green G17",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"326 - Green G18",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"327 - Green G19",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"328 - Green H15",2026-05-27,"Settlement","Striated caracara",TRUE,9
+"329 - Green H16",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"330 - Green H17",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"331 - Green H18",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"332 - Green H19",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"333 - Green K15",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"334 - Green K16",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"335 - Green K17",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"336 - Green K18",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"337 - Green K19",2026-05-28,"Settlement","Striated caracara",TRUE,8
+"338 - Green M15",2026-05-29,"Settlement","Striated caracara",TRUE,7
+"339 - Green M16",2026-05-29,"Settlement","Striated caracara",TRUE,7
+"340 - Green M17",2026-05-29,"Settlement","Striated caracara",TRUE,7
+"341 - Green M18",2026-05-30,"North Hut","Striated caracara",TRUE,6
+"342 - Green M19",2026-05-30,"North Hut","Striated caracara",TRUE,6
+"343 - Green N15",2026-05-30,"North Hut","Striated caracara",TRUE,6
+"344 - Green N16",2026-05-30,"North Hut","Striated caracara",TRUE,6
+"346 - Green P15",2026-05-30,"North Hut","Striated caracara",TRUE,6
+"347 - Green N18",2026-05-31,"North Hut","Striated caracara",TRUE,5
+"348 - Green N19",2026-05-31,"North Hut","Striated caracara",TRUE,5
+"349 - Green P16",2026-05-31,"North Hut","Striated caracara",TRUE,5
+"350 - Green P18",2026-05-31,"North Hut","Striated caracara",TRUE,5
+"352 - Green R15",2026-05-31,"North Hut","Striated caracara",TRUE,5
+"353 - Green R16",2026-05-31,"North Hut","Striated caracara",TRUE,5
+"354 - Green R17",2026-05-31,"North Hut","Striated caracara",TRUE,5
+"355 - Green R18",2026-05-31,"North Hut","Striated caracara",TRUE,5
+"356 - Green R19",2026-06-01,"North End","Striated caracara",TRUE,4
+"359 - Green S17",2026-06-01,"North End","Striated caracara",TRUE,4
+"360 - Green S18",2026-06-02,"North End","Striated caracara",TRUE,3
+"361 - Green S19",2026-06-02,"North End","Striated caracara",TRUE,3
+"362 - Green T15",2026-06-02,"North End","Striated caracara",TRUE,3
+"363 - Green T17",2026-06-02,"North End","Striated caracara",TRUE,3
+"367 - Green U16",2026-06-02,"North End","Striated caracara",TRUE,3
+"368 - Green U17",2026-06-02,"North End","Striated caracara",TRUE,3
+"369 - Green U18",2026-06-04,"Settlement","Striated caracara",TRUE,1
+"370 - Green U19",2026-06-04,"Settlement","Striated caracara",TRUE,1
+"371 - Green V15",2026-06-04,"Settlement","Striated caracara",TRUE,1
+"372 - Green V16",2026-06-04,"Settlement","Striated caracara",TRUE,1
+"375 - Green V19",2026-06-04,"Settlement","Striated caracara",TRUE,1
+"376 - Green W15",2026-06-04,"Settlement","Striated caracara",TRUE,1
+"377 - Green W16",2026-06-04,"Settlement","Striated caracara",TRUE,1
+"378 - Green W17",2026-06-04,"Settlement","Striated caracara",TRUE,1
+"379 - Green W18",2026-06-05,"Settlement","Striated caracara",TRUE,0
+"380 - Green W19",2026-06-05,"Settlement","Striated caracara",TRUE,0
+"381 - Green X17",2026-06-05,"Settlement","Striated caracara",TRUE,0
+"383 - Green X18",2026-06-05,"Settlement","Striated caracara",TRUE,0
+"384 - Green X19",2026-06-05,"Settlement","Striated caracara",TRUE,0
+"385 - Green Y15",2026-06-05,"Settlement","Striated caracara",TRUE,0

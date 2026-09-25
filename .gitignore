@@ -47,3 +47,9 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# macOS junk
+.DS_Store
+
+# Claude Code local tooling config
+.claude/
