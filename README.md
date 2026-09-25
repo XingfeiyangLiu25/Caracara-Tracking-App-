@@ -58,5 +58,4 @@ concepts adapted from Braxton Sizemore's skua tracking app and Xibiao Wang's
 ELISA prevalence app. 
 
 ## Contact
-
-xl857@cornell.edu
+xl857@cornell.edu 
