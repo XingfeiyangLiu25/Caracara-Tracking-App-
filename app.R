@@ -1,4 +1,6 @@
 # 1. Load Packages ----
+# Purpose: bring in every library the app depends on before anything else
+# runs. Nothing app-specific happens yet, just making the tools available.
 library(shiny)        # app framework
 library(bslib)        # loaded, unused
 library(rsconnect)    # deploy to shinyapps.io
@@ -12,6 +14,9 @@ library(shinyWidgets) # pickerInput (checkbox dropdown + search + select all)
 library(DT)           # data table tab
 
 # 2. Load & Clean Data ----
+# Purpose: turn the raw combined csv into the exact shape the rest of the
+# app assumes -- real Date objects, a stable per-individual ID, readable
+# Colony/Age labels -- so nothing downstream has to deal with messy raw values.
 caracara_data <- read.csv("Caracara_Data_combined.csv")  # read.csv() = load a csv into a data frame
 # combined = original Caracara_Data.CSV + reformatted feeding-station data (see reformat_NWI_rings.R)
 
@@ -36,6 +41,8 @@ caracara_data$Longitude_display <- jitter(caracara_data$Longitude, amount = 0.00
 ## Build Combined Metal + Darvic ID. 1 Darvic = 1 individual. If any record of a Darvic has a
 # real Metal number, backfill that Metal onto every other record of that
 # same Darvic (resightings usually only read the Darvic from a distance).
+# Purpose: give every bird ONE consistent ID that survives incomplete tags,
+# since raw Darvic or raw Metal alone can each be missing on a given row.
 metal_lookup <- caracara_data %>%
   filter(!is.na(Darvic), !Metal %in% c("", "X", "None", "?")) %>%
   # filter() = keep matching rows; is.na() = TRUE if missing; %in% = value found in this set
@@ -84,6 +91,8 @@ caracara_data <- caracara_data %>%
 unique_individuals <- sort(unique(caracara_data$individual_id))
 
 ## Colony & Age Cleanup ----
+# Purpose: make sure every row has a usable Colony/Age category to filter
+# by, instead of rows with missing values becoming impossible to select.
 # blank -> "(Unknown)" so those rows stay selectable instead of vanishing
 caracara_data$Colony[caracara_data$Colony == ""] <- "(Unknown)"
 caracara_data$Age[caracara_data$Age == ""] <- "(Unknown)"
@@ -95,6 +104,9 @@ date_min <- min(caracara_data$Date, na.rm = TRUE)  # na.rm = TRUE: ignore NAs wh
 date_max <- max(caracara_data$Date, na.rm = TRUE)
 
 ## About Tab Content ----
+# Purpose: give anyone using the app a persistent, in-app explanation of the
+# ID convention and data caveats, instead of that context only living in
+# chat history or the README.
 # static HTML, nothing reactive
 about_html <- HTML("
   <p>This Shiny application supports the exploration of Striated caracara
@@ -124,10 +136,9 @@ about_html <- HTML("
   marker shape; individuals are distinguished by marker color.</p>
 
   <h4>Authors and contributors</h4>
-  <p>Feiyang Liu, Amandine Gamble, and collaborators.<br>
+  <p>Feiyang Liu, Jeff White, Amandine Gamble, and collaborators.<br>
   Code and visualization concepts adapted from: Braxton Sizemore (skua
-  tracking app) and Xibiao Wang (ELISA prevalence app). Ring identification
-  guidance: Jeff White.</p>
+  tracking app) and Xibiao Wang (ELISA prevalence app).
 
   <h4>Contact</h4>
   <p>xl857@cornell.edu</p>
@@ -138,6 +149,8 @@ about_html <- HTML("
 
 # 3. Define the User Interface (UI) ----
 # Top title band + fixed sidebar (filters) + tabbed main content (Map/Data Table/About)
+# Purpose: declare every visual piece of the app in one static structure.
+# Nothing here is reactive yet -- that all happens in the server below.
 ui <- fluidPage(
   title = "Caracara Tracker",
   style = "padding: 0;",
@@ -251,10 +264,17 @@ ui <- fluidPage(
 )
 
 # 4. Server Setup (built ONCE, shared across every user session) ----
+# Purpose: build the things that are identical for every visitor and don't
+# depend on any input (color palette & icon-building functions) a single time 
+# here, instead of recomputing them for each browser session.
 
 ## Color Palette & Marker Icon Builders ----
+# turn individual & species into visual appearance (a color, a shape) that 
+# the drawing code can just look up.
+
 # One distinct color per individual, built from the FULL individual list (not
 # whatever's filtered) so a bird's color never changes when filters change.
+
 set.seed(123)  # fixed seed = same colors every restart
 my.colors <- createPalette(length(unique_individuals), c("#000000", "#FFFFFF"), M = 5000)
 # createPalette(n, ...) = generate n visually distinct colors
@@ -273,13 +293,13 @@ species_shapes <- c(
 )
 
 # Builds one marker's image as a self-contained SVG "data URI" string.
-# divIcon() (HTML/CSS icons) doesn't exist in the R leaflet package;
+# divIcon() (HTML/CSS icons) doesn't exist in the R leaflet package.
 # makeIcon() only takes an image URL -- so this builds a tiny SVG shape and
 # encodes it as a data: URI to use as that "image."
 #
 # dot_size = the visible colored shape's size, fixed regardless of
 # border_width. The border is a same-shaped layer drawn BEHIND the dot
-# (bigger circle/square in border_color, dot on top), not an SVG stroke --
+# (bigger circle/square in border_color, dot on top), not an SVG stroke.
 # a stroke eats into the shape as it thickens, which was the earlier bug.
 make_species_icon_uri <- function(species, fill_color, dot_size = 20,
                                    border_color = NA, border_width = 0,
@@ -324,6 +344,7 @@ make_species_icon_uri <- function(species, fill_color, dot_size = 20,
 # individual makeIcon() objects. I tried the list version first: no error
 # anywhere, addMarkers() just silently used Leaflet's default blue pin
 # instead. Only found it by checking the rendered marker HTML.
+
 build_icons <- function(df, dot_size = 20, border_color = NA, border_width = 0,
                          border_opacity = 1) {
   total_size <- dot_size + 2 * border_width
@@ -346,9 +367,15 @@ build_icons <- function(df, dot_size = 20, border_color = NA, border_width = 0,
 }
 
 # 5. Server Logic (runs once per browser session) ----
+# Purpose: everything reactive lives here -- this function runs fresh for
+# each browser tab that opens the app, wiring up filtering, drawing, and
+# interactivity on top of the static UI declared in section 3.
+
 server <- function(input, output, session) {
 
   ## Reactive Filtered Data ----
+  # Purpose: single source of truth for "what matches the current filters,"
+  # so the map, table, and download can never show inconsistent results.
   # everything else (map, table, download) reads from this one reactive, so
   # they're always guaranteed to show/export the same rows
   filtered_data <- reactive({
@@ -389,7 +416,7 @@ server <- function(input, output, session) {
   ## Individual Dropdown Narrowing ----
   # keep only birds with at least 1 sighting matching the current
   # Species/Colony/Age/Date filters. Colors stay fixed (individuals_pal
-  # uses the FULL list up top) -- only the dropdown's choices change.
+  # uses the FULL list up top), only the dropdown's choices change.
   observe({
     # observe({...}) = like reactive(), but runs for its side effects
     # (here, updating another input) instead of returning a value
@@ -415,8 +442,6 @@ server <- function(input, output, session) {
   })
 
   ## Base Map ----
-  # built once; never touched again directly -- all data drawing happens
-  # via leafletProxy() below instead of rebuilding this from scratch
   output$falklands_map <- renderLeaflet({
     # renderLeaflet({...}) = build the map shown by leafletOutput("falklands_map")
     leaflet(options = leafletOptions(maxZoom = 17)) %>%
@@ -442,7 +467,6 @@ server <- function(input, output, session) {
   })
 
   ## Main Draw Observer (tracks, dots, start/end markers, zoom) ----
-  # redraws everything whenever filtered_data() changes
   observe({
     data <- filtered_data()
 
@@ -505,9 +529,7 @@ server <- function(input, output, session) {
                                   "<b>Date:</b>", Date))
     }
 
-    # 4. fitBounds, last. Legend used to live here too, but Amandine had it
-    # dropped -- a legend listing every selected bird doesn't fit once a
-    # lot are picked, so clicking a popup answers "which bird" instead.
+    # 4. fitBounds, last. Legend used to live here too, change to clicking a popup answers "which bird" instead.
     map_proxy %>%
       fitBounds(
         # fitBounds() = zoom/pan the map to fit this box
@@ -524,5 +546,7 @@ server <- function(input, output, session) {
 }
 
 # 6. Run the Application ----
+# Purpose: the single line that actually launches everything defined above
+# as a working app.
 shinyApp(ui = ui, server = server)
 # shinyApp(ui, server) = bundles both halves into one runnable app
